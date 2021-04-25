@@ -85,9 +85,8 @@ The method to be executed in this task.
 * A checker MUST be able to handle multiple subsequent `getnoise` calls for the same `putnoise`/`taskChainId`.
 
 `havoc`:
-* A `havoc` MUST NOT depend on any previous tasks or credentials that should have been created during a previous task.
-* A `havoc` MAY use e.g. credentials from previous tasks, provided it does not fail if these credentials are missing.
-* A `havoc` MAY be called at any time during a round, even before `putflag` and `putnoise` of the same round.
+* A `havoc` MUST NOT depend on any tasks from previous rounds or the same round, including credentials that should have been created during one of these task.
+* A `havoc` MAY use e.g. credentials from other tasks, provided it does not fail if these credentials are missing.
 
 General requirements:
 * A checker MUST NOT make any assumptions about the order of the execution of any tasks, except the following:
