@@ -10,3 +10,8 @@ See [ctf.json](ctf_json.md)
 The checker API specifies the HTTP-based protocol which is used by the engine (and any other tool interacting with the checkers) to send it tasks and receive the result of the task.
 
 See [checker protocol](checker_protocol.md)
+
+## Service & Checker tenets
+The service & checker tenets specify the requirements a service, its vulnerabilities and associated checker have to satisfy.
+
+See [service & checker tenets](service_checker_tenets.md)
