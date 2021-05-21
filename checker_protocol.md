@@ -48,7 +48,7 @@ Response:
 interface CheckerResultMessage {
     result: "INTERNAL_ERROR" | "OK" | "MUMBLE" | "OFFLINE";
     message: string | null;
-    attack_info?: string | null;
+    attackInfo?: string | null;
 }
 ```
 ### CheckerTaskMessage
@@ -63,7 +63,7 @@ The method to be executed in this task.
 * The `putflag` MUST store any credentials which are required by the `getflag` to retrieve the flag (e.g. username and password used for registering an account) in the checker's database.
 * The `putflag` MUST use the `taskChainId` (see below) as identifier in the database to store any credentials required by a later `getflag`, as this is guaranteed to be identical for any subsequent `getflag` requests for the same flag. The `taskChainId` is also guaranteed to be different for tasks in the same round for different teams and tasks for the same team in different rounds.
 * The caller MUST NOT call `putflag` with the same `flag` or `taskChainId` twice during a CTF. (Note that supporting such behavior in the checker might still be useful for testing purposes.)
-* A `putflag` MAY return a value for `attack_info` providing some identifying information the attackers may use to identify where the flag is stored in the service, such as a username in a service that doesn't provide other user enumeration capabilities.
+* A `putflag` MAY return a value for `attackInfo` providing some identifying information the attackers may use to identify where the flag is stored in the service, such as a username in a service that doesn't provide other user enumeration capabilities.
 
 `getflag`:
 * A `getflag` request MUST check whether the flag (see the flag parameter below) placed during the previous `putflag` with the same `taskChainId` is still present in the service.
@@ -141,7 +141,7 @@ The message SHOULD provide additional information on failure cases.
 The checker MUST NOT include internal details in this message, most notably it MUST NOT include the flag or other secret information.
 
 When the `result` is `"INTERNAL_ERROR"`, the message MUST NOT be displayed publicly to participants and MAY contain secret information.
-#### attack_info
+#### attackIinfo
 For results from `putflag`, this is an arbitrary string that will be publicly displayed for each team and round if it is not `null`. For all other methods, this field must be unset or `null`.
 
 It SHOULD provide attackers with otherwise unavailable information required to mount an exploit retrieving this flag, such as a username.
