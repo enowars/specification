@@ -141,7 +141,7 @@ The message SHOULD provide additional information on failure cases.
 The checker MUST NOT include internal details in this message, most notably it MUST NOT include the flag or other secret information.
 
 When the `result` is `"INTERNAL_ERROR"`, the message MUST NOT be displayed publicly to participants and MAY contain secret information.
-#### attackIinfo
+#### attackInfo
 For results from `putflag`, this is an arbitrary string that will be publicly displayed for each team and round if it is not `null`. For all other methods, this field must be unset or `null`.
 
 It SHOULD provide attackers with otherwise unavailable information required to mount an exploit retrieving this flag, such as a username.
