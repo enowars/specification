@@ -48,7 +48,7 @@ Response:
 interface CheckerResultMessage {
     result: "INTERNAL_ERROR" | "OK" | "MUMBLE" | "OFFLINE";
     message: string | null;
-    attack_info?: string | null;
+    attackInfo?: string | null;
 }
 ```
 ### CheckerTaskMessage
