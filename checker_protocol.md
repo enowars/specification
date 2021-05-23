@@ -11,6 +11,7 @@ interface CheckerInfoMessage {
     flagVariants: number;
     noiseVariants: number;
     havocVariants: number;
+    exploitVariants: number;
 }
 ```
 ### CheckerInfoMessage
@@ -25,12 +26,15 @@ The number of different havoc variants supported and requested by the checker/se
 
 A havoc can be used to test any functionality in the service which is not covered by `putflag`/`getflag` and `putnoise`/`getnoise`. While a havoc MAY use information from other tasks, it MUST NOT fail if such information is missing from either the checker database or the service. For example, it might try to reuse an account created during `putflag`, but is NOT allowed to fail when this account is missing, unlike the corresponding `getflag`, which is expected to fail when it can no longer login. Note that `havoc` may run at any time during a round, even before `putflag` or `putnoise`.
 
+#### exploitVariants
+The number of different exploits. This MUST be greater than or equal to the number of `flagVariants`.
+
 ## `POST /`
 Parameter:
 ```ts
 interface CheckerTaskMessage {
     taskId: number;
-    method: "putflag" | "getflag" | "putnoise" | "getnoise" | "havoc";
+    method: "putflag" | "getflag" | "putnoise" | "getnoise" | "havoc" | "exploit";
     address: string;
     teamId: number;
     teamName: string;
@@ -41,6 +45,9 @@ interface CheckerTaskMessage {
     timeout: number;
     roundLength: number;
     taskChainId: string;
+    flagRegex?: string | null;
+    flagHash?: string | null;
+    attackInfo?: string | null;
 }
 ```
 Response:
@@ -49,6 +56,7 @@ interface CheckerResultMessage {
     result: "INTERNAL_ERROR" | "OK" | "MUMBLE" | "OFFLINE";
     message: string | null;
     attackInfo?: string | null;
+    flag?: string | null;
 }
 ```
 ### CheckerTaskMessage
@@ -90,6 +98,15 @@ The method to be executed in this task.
 * A `havoc` MUST NOT depend on any tasks from previous rounds or the same round, including credentials that should have been created during one of these task.
 * A `havoc` MAY use e.g. credentials from other tasks, provided it does not fail if these credentials are missing.
 
+`exploit`:
+* The `exploit` method is only used during testing and MUST NOT be called during a CTF.
+* Each flag store MUST be exploitable by at least one `exploit` variant.
+* A flag store MAY be exploitable by more than one `exploit` variant.
+* An `exploit` variant MAY be able to retrieve flags from multiple flag stores.
+* Each flag store SHOULD have an `exploit` variant that is only able to retrieve flags from that flag store.
+* The `exploit` method checks whether it is able to retrieve a flag matching the `flagHash`. If yes, it MUST return `OK` and the found flag as part of the result. If not, it MUST return `MUMBLE`. It is the caller's responsibility to ensure the flag is stored in the expected flag store.
+* An `exploit` MAY need to be connected to the service before `putflag` is called. In that case it is the caller's responsibility to ensure `putflag` is called while the `exploit` method is running.
+
 General requirements:
 * A checker MUST NOT make any assumptions about the order of the execution of any tasks, except the following:
     * a `getflag` with the same `taskChainId` as the related `putflag` is always executed after the `putflag` is completed
@@ -124,6 +141,16 @@ The unique identifier of a chain of tasks (i.e. `putflag` and `getflag`s or `put
 The `taskChainId` MUST be used as the identifier in the database in case e.g. credentials created during `putflag` need to be stored and are required in a subsequent `getflag`.
 
 A checker MUST support being called multiple times with the same `method`, `serviceId`, `roundId`, `teamId` and `variantId`, in which case the `uniqueVariantIndex` can be used to distinguish the taskChains.
+
+#### flagRegex
+For the `exploit` method, this is a regular expression that the flag to be exploited must match. For all other methods, the `flagRegex` is not set or `null`.
+
+#### flagHash
+For the `exploit` method, this is the hex-encoded SHA256 hash of the flag to be searched by the exploit. For all other methods, the `flagHash` is not set or `null`.
+
+#### attackInfo
+For the `exploit` method, this is the `attackInfo` that was returned by the `putflag` method for the flag to be found, if any was returned, and not set or `null` otherwise. For all other methods, the `flagHash` is not set or `null`.
+
 ### CheckerResultMessage
 #### result
 The result of the task. For the purpose of scoring, there is no difference between `"MUMBLE"` and `"OFFLINE"` and the distinction is only made for informational purposes.
@@ -145,3 +172,6 @@ When the `result` is `"INTERNAL_ERROR"`, the message MUST NOT be displayed publi
 For results from `putflag`, this is an arbitrary string that will be publicly displayed for each team and round if it is not `null`. For all other methods, this field must be unset or `null`.
 
 It SHOULD provide attackers with otherwise unavailable information required to mount an exploit retrieving this flag, such as a username.
+
+#### flag
+For results from `exploit`, if the result is `"OK"`, this MUST be the flag matching the `flagHash`. For other methods or when the result is not `"OK"`, this must be unset or `null`.
