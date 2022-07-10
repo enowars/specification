@@ -149,7 +149,7 @@ For the `exploit` method, this is a regular expression that the flag to be explo
 For the `exploit` method, this is the hex-encoded SHA256 hash of the flag to be searched by the exploit. For all other methods, the `flagHash` is not set or `null`.
 
 #### attackInfo
-For the `exploit` method, this is the `attackInfo` that was returned by the `putflag` method for the flag to be found, if any was returned, and not set or `null` otherwise. For all other methods, the `flagHash` is not set or `null`.
+For the `exploit` method, this is the `attackInfo` that was returned by the `putflag` method for the flag to be found, if any was returned, and not set or `null` otherwise. For all other methods, the `attackInfo` is not set or `null`.
 
 ### CheckerResultMessage
 #### result
