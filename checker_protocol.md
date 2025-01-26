@@ -165,13 +165,17 @@ The message MUST be `null` when the `result` is `"OK"`.
 
 The message SHOULD provide additional information on failure cases.
 
+The message MUST NOT contain the <Null> character.
+
 The checker MUST NOT include internal details in this message, most notably it MUST NOT include the flag or other secret information.
 
 When the `result` is `"INTERNAL_ERROR"`, the message MUST NOT be displayed publicly to participants and MAY contain secret information.
 #### attackInfo
 For results from `putflag`, this is an arbitrary string that will be publicly displayed for each team and round if it is not `null`. For all other methods, this field must be unset or `null`.
 
-It SHOULD provide attackers with otherwise unavailable information required to mount an exploit retrieving this flag, such as a username.
+The attackInfo MUST NOT contain the <Null> character.
+
+The attackInfo SHOULD provide attackers with otherwise unavailable information required to mount an exploit retrieving this flag, such as a username.
 
 #### flag
 For results from `exploit`, if the result is `"OK"`, this MUST be the flag matching the `flagHash`. For other methods or when the result is not `"OK"`, this must be unset or `null`.
