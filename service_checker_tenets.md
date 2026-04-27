@@ -13,16 +13,16 @@
 
 ### Vulnerabilities
 - A vulnerability MUST be exploitable and result in a correct flag
-- A vulnerability MUST stay exploitable over the course of the complete game (I.e. auto delete old flags, if necessary) 
+- A vulnerability MUST stay exploitable over the course of the complete game (I.e. auto delete old flags, if necessary)
 - A service SHOULD have more than one vulnerability
 - A service MUST have at least one complex vulnerability
-- Vulnerabilities SHOULD NOT be easily replayable 
+- Vulnerabilities SHOULD NOT be easily replayable
 - Every vulnerability MUST be fixable with reasonable effort and without breaking the checker
 - A service SHOULD NOT have unintended vulnerabilities
 - A service SHOULD NOT have vulnerabilities that allow the deletion but not the retrieval of flags
 - A service SHOULD NOT have vulnerabilities that allow only one attacker to extract a flag
 - A vulnerability MUST be exploitable without renting excessive computing resources
-- A vulnerability MUST be expoitable with reasonable amounts of network traffic
+- A vulnerability MUST be exploitable with reasonable amounts of network traffic
 - A service MUST have at least one "location" where flags are stored (called flag store)
 - A service MAY have additional flag stores, which requires a separate exploit to extract flags
 
@@ -34,4 +34,4 @@
 - A checker MUST log sufficiently detailed information that operators can handle complaints from participants
 - A checker MUST check the entire functionality of the service and report faulty behavior, even unrelated to the vulnerabilities
 - A checker SHOULD not be easily identified by the examination of network traffic
-- A checker SHOULD use unusual, incorrect or pseudomalicious input to detect network filters
+- A checker SHOULD use unusual, incorrect or pseudo-malicious input to detect network filters
