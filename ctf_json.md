@@ -58,7 +58,6 @@ The length of one round in seconds. Note that each round is divided into four qu
 #### dnsSuffix
 When no address (IP or domain name) is specified for a team, the DNS suffix will be used to create an address automatically following the scheme `team<teamId><dnsSuffix>`. This means the dnsSuffix MUST include a leading dot, i.e. setting the dnsSuffix to `.example.com` results in addresses looking like `team1.example.com`.
 
-This dnsSuffix will also be added to the `scoreboardInfo.json`.
 #### teamSubnetBytesLength
 The length of the network mask in bytes, ASSUMING AN IPv6 ADDRESS. When using IPv4 subnets, the subnets in the `Team` interface (see below) must be specified as IPv4-mapped IPv6 addresses, which are located in the `::ffff:0:0/96` network and can be noted like `::ffff:192.168.1.0`. Note that the four bytes of the IPv4 address are delimited by `.` and not `:`, which means they are not hexadecimal values in 2-byte-blocks like in a usual IPv6 address.
 
@@ -75,7 +74,7 @@ A JSON array containing team objects, see below.
 #### id
 This ID must be unique for each service during a CTF and must be greater than (not equal to) `0`. It MUST fit into an `int` variable in C#. It is recommended to use ascending IDs starting with `1`.
 #### name
-The name of the service which will appear in log messages and is included in the `scoreboardInfo.json`.
+The name of the service which will appear in log messages.
 #### flagsPerRoundMultiplier
 When the multiplier is `1`, each service gets as many `putflag`s per round as it supports `flagVariants` (see checker specification for more details). When setting to multiplier to `2`, there will be two `putflag`s per `variantId` each round and so on.
 #### noisesPerRoundMultiplier
@@ -92,14 +91,14 @@ An array of strings, each containing the URL of one checker. For example: `["htt
 #### id
 This ID must be unique for each team during a CTF and must be greater than (not equal to) `0`. When no address is specified, this ID is used to construct the address based on the `dnsSuffix` (see above).
 #### name
-The name of the team, this appears in log messages and is included in the `scoreboardInfo.json`.
+The name of the team, this appears in log messages.
 #### address
 The address of the team, this is passed as service addres to the checkers. See checker protocol specification for more details.
 #### teamSubnet
 The subnet of the team. This, together with the `teamSubnetBytesLength`, is used by the EnoFlagSink to determine which team an incoming flag submission connection belongs to.
 #### logoUrl
-The complete URL to an image file containing the logo for the team. This is included in the `scoreboardInfo.json`.
+The complete URL to an image file containing the logo for the team.
 #### countryCode
-The ISO 3166-1 alpha-2 country code in uppercase letters, for example `"DE"` for germany. This is included in the `scoreboardInfo.json`.
+The ISO 3166-1 alpha-2 country code in uppercase letters, for example `"DE"` for germany.
 #### active
 When set to `false`, the team is temporarily disabled and behaves as if it was not part of the config at all, meaning it will not receive any new tasks. This is only used if a team should be temporarily disabled during a CTF, in which case a restart of the Engine is required. Defaults to `true`
